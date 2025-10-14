@@ -33,7 +33,7 @@ cmake --preset windows-mingw-release
 cmake --build --preset windows-mingw-release
 ```
 
-#### Linux
+#### Linux (Using gcc/g++)
 Debug Mode
 ```bash
 cmake --preset linux-debug
