@@ -32,3 +32,15 @@ Release Mode
 cmake --preset windows-mingw-release
 cmake --build --preset windows-mingw-release
 ```
+
+#### Linux
+Debug Mode
+```bash
+cmake --preset linux-debug
+cmake --build --preset linux-debug
+```
+Release Mode
+```bash
+cmake --preset linux-release
+cmake --build --preset linux-release
+```
