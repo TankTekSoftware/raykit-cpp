@@ -14,3 +14,8 @@ lib/
 #  Clangd Specific Ignores  #
 #---------------------------#
 .cache/
+
+#-----------------#
+#  ImGui Ignores  #
+#-----------------#
+imgui.ini

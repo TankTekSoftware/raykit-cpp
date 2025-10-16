@@ -8,6 +8,7 @@ class ExampleScene : public Scene
     private:
         Texture2D bricks_texture;
         float rotation;
+        float speed;
     public:
         void on_compose() override;
         void on_dispose() override;

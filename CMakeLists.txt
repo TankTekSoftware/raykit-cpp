@@ -39,6 +39,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
+
 # -- Add Executable -- #
 file(GLOB_RECURSE SOURCES 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
@@ -55,6 +57,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 
         raylib
+        imgui
 )
 
 # -- Compile Definitions -- #

@@ -3,6 +3,9 @@
 #include <raylib.h>
 #include <game/scenes/ExampleScene.hpp>
 
+#include <imgui.h>
+#include <rlImGui.h>
+
 Game::Game()
 {
     this->window_config = { 0 };
@@ -42,6 +45,8 @@ void Game::run()
     InitWindow(this->window_config.width, this->window_config.height, this->window_config.title.c_str());
     InitAudioDevice();
     SetTargetFPS(this->window_config.target_fps);
+    
+    rlImGuiSetup(true);
 
     this->on_compose();
 
@@ -52,12 +57,17 @@ void Game::run()
 
         BeginDrawing();
             ClearBackground(BLACK);
+
+            rlImGuiBegin();
             SceneManager::on_draw();
             this->on_draw();
+            rlImGuiEnd();
         EndDrawing();
     }
 
     this->on_dispose();
+
+    rlImGuiShutdown();
 
     CloseAudioDevice();
     CloseWindow();
