@@ -8,7 +8,7 @@ A modern C++ starter kit for building cross-platform games with Raylib, CMake, a
 * ⚙️ CMake build system, FetchContent for Raylib
 * 🗂️ Organized project structure (src / include / assets)
 * 📦 Auto-copy of assets to build output
-* 🪟 ImGui built-in.
+* 🪟 ImGui debugging ui built-in
   
 ## 📂 Project Structure
 * `src/` - your `.cpp` and `.hpp` code
