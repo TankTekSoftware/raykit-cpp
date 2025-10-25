@@ -46,3 +46,15 @@ Release Mode
 cmake --preset linux-release
 cmake --build --preset linux-release
 ```
+
+#### macOS
+Debug Mode
+```bash
+cmake --preset macos-debug
+cmake --build --preset macos-debug
+```
+Release Mode
+```bash
+cmake --preset macos-release
+cmake --build --preset macos-release
+```
