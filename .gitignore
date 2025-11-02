@@ -16,6 +16,7 @@ lib/
 .cache/
 
 #-----------------#
-#  ImGui Ignores  #
+#  Other Ignores  #
 #-----------------#
 imgui.ini
+.vscode/
