@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(raylib-cpp LANGUAGES CXX)
+project(raykit-cpp LANGUAGES CXX)
 
 # -- Compile Commands -- #
 set(COMPILE_COMMANDS_TOP ${CMAKE_SOURCE_DIR}/compile_commands.json)

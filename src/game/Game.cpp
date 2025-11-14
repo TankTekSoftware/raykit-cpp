@@ -1,4 +1,4 @@
-#include "toolbox/SceneManager.hpp"
+#include <toolbox/scene/SceneManager.hpp>
 #include <game/Game.hpp>
 #include <raylib.h>
 #include <game/scenes/ExampleScene.hpp>
@@ -19,7 +19,6 @@ void Game::on_compose()
 {
     // Example of adding a scene to the SceneManager
     SceneManager::add_scene("EXAMPLE", std::make_unique<ExampleScene>());
-
 
     SceneManager::change_scene("EXAMPLE");
 }

@@ -1,4 +1,4 @@
-#include <toolbox/SceneManager.hpp>
+#include <toolbox/scene/SceneManager.hpp>
 
 #include <iostream>
 

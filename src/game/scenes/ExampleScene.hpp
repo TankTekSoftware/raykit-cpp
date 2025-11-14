@@ -1,6 +1,6 @@
 #pragma once
 
-#include "toolbox/Scene.hpp"
+#include <toolbox/scene/Scene.hpp>
 #include <raylib.h>
 
 class ExampleScene : public Scene
