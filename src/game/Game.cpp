@@ -1,4 +1,4 @@
-#include <toolbox/scene/SceneManager.hpp>
+#include <raykit/scene/SceneManager.hpp>
 #include <game/Game.hpp>
 #include <raylib.h>
 #include <game/scenes/ExampleScene.hpp>

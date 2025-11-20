@@ -37,7 +37,14 @@ FetchContent_Declare(
     GIT_TAG "5.5"
 )
 
-FetchContent_MakeAvailable(raylib)
+message(STATUS "Fetching enet...")
+FetchContent_Declare(
+    enet
+    GIT_REPOSITORY "https://github.com/zpl-c/enet.git"
+    GIT_TAG "v2.6.5"
+)
+
+FetchContent_MakeAvailable(raylib enet)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 
