@@ -45,16 +45,11 @@ jobs:
 
     - name: Test
       run: ctest --preset ${{ matrix.preset }}
-      continue-on-error: true
-
-    - name: Upload Test Results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: Test Results - ${{ matrix.os }}
-
+      continue-on-error: false 
+    
     - name: Upload Build Artifacts
       if: success()
       uses: actions/upload-artifact@v4
       with:
         name: Build Artifacts - ${{ matrix.os }}
+        path: bin/
