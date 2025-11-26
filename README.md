@@ -52,3 +52,11 @@ Release Mode
 ```bash
 make build macos-release
 ```
+
+## 📄 Makefile Commands
+```bash
+make build <preset-name>     # Build the project using the specified CMake preset
+make configure <preset-name> # Configure the project using the specified CMake preset
+make clean                   # Clean the build directory
+make rebuild                 # Clean and rebuild the project
+```
