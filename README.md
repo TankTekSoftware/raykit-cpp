@@ -26,35 +26,29 @@ A modern C++ starter kit for building cross-platform games with Raylib, CMake, a
 #### Windows (WSL with MinGW)
 Debug Mode
 ```bash
-cmake --preset windows-mingw-debug
-cmake --build --preset windows-mingw-debug
+make build windows-mingw-debug
 ```
 Release Mode
 ```bash
-cmake --preset windows-mingw-release
-cmake --build --preset windows-mingw-release
+make build windows-mingw-release
 ```
 
 #### Linux (Using gcc/g++)
 Debug Mode
 ```bash
-cmake --preset linux-debug
-cmake --build --preset linux-debug
+make build linux-debug
 ```
 Release Mode
 ```bash
-cmake --preset linux-release
-cmake --build --preset linux-release
+make build linux-release
 ```
 
 #### macOS
 Debug Mode
 ```bash
-cmake --preset macos-debug
-cmake --build --preset macos-debug
+make build preset macos-debug
 ```
 Release Mode
 ```bash
-cmake --preset macos-release
-cmake --build --preset macos-release
+make build macos-release
 ```
