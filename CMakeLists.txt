@@ -63,6 +63,15 @@ target_link_libraries(${PROJECT_NAME}
         enet
 )
 
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE 
+            ws2_32
+            winmm
+            gdi32
+    )
+endif()
+
 # -- Compile Definitions -- #
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE 
