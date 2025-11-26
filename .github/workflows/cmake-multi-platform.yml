@@ -25,13 +25,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Dependencies (Linux)
+    - name: Install Dependencies 
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake ninja-build gcc g++ libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
 
-    - name: Install Dependencies (Windows)
+    - name: Install Dependencies 
       if: matrix.os == 'windows-latest'
       run: |
         choco install ninja mingw
@@ -46,3 +46,13 @@ jobs:
     - name: Test
       run: ctest --preset ${{ matrix.preset }}
       continue-on-error: true
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: Test Results - ${{ matrix.os }}
+    - name: Upload Build Artifacts
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+      name: Build Artifacts - ${{ matrix.os }}
