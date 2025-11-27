@@ -1,5 +1,13 @@
 #pragma once
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#ifndef NOGDI
+#define NOGDI       // Prevents WinAPI Rectangle() from being defined
+#endif
+
 #include "raykit/net/RawPacket.hpp"
 #include <cstdint>
 #include <enet.h>
