@@ -70,6 +70,15 @@ if(WIN32)
             winmm
             gdi32
     )
+
+    target_compile_definitions(${PROJECT_NAME} 
+        PRIVATE
+            WIN32_LEAN_AND_MEAN
+            NOMINMAX
+            NOGDI
+            NOUSER
+            NOSOUND
+    )
 endif()
 
 # -- Compile Definitions -- #
