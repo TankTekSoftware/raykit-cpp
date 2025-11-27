@@ -13,6 +13,7 @@ Game::Game()
     this->window_config.height = 600;
     this->window_config.title = "raykit-cpp - Starter Template";
     this->window_config.target_fps = 60;
+
 }
 
 void Game::on_compose()

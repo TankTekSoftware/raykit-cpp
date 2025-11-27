@@ -1,6 +1,10 @@
+#include "game/net/PacketType.hpp"
+#include <cstddef>
+#include <cstdint>
 #include <raykit/net/MultiplayerAPI.hpp>
 
 #include <enet.h>
+#include <vector>
 
 MultiplayerAPI::MultiplayerAPI()
 {
@@ -49,3 +53,114 @@ ENetHost* MultiplayerAPI::create_client(const std::string& host, int port)
     }
     return client;
 }
+
+bool MultiplayerAPI::send_packet(ENetPeer* peer, const RawPacket& packet)
+{
+    if(!peer) {
+        return false;
+    }
+
+    if(!this->initialized) {
+        return false;
+    }
+
+    size_t total_size = sizeof(PacketType) + packet.payload.size();
+    std::vector<uint8_t> buffer(total_size);
+    
+    std::memcpy(buffer.data(), &packet.type, sizeof(PacketType));
+    std::memcpy(buffer.data() + sizeof(PacketType),
+                packet.payload.data(),
+                packet.payload.size());
+
+    ENetPacket* enetPkt =
+        enet_packet_create(buffer.data(), buffer.size(),
+                           ENET_PACKET_FLAG_RELIABLE);
+
+    enet_peer_send(peer, 0, enetPkt);
+    enet_host_flush(peer->host); 
+
+    return true;
+}
+
+bool MultiplayerAPI::send_packet_unreliable(ENetPeer* peer, const RawPacket& packet)
+{
+    if(!peer) {
+        return false;
+    }
+    if(!this->initialized) {
+        return false;
+    }
+
+    size_t total_size = sizeof(PacketType) + packet.payload.size();
+    std::vector<uint8_t> buffer(total_size);
+    
+    std::memcpy(buffer.data(), &packet.type, sizeof(PacketType));
+    std::memcpy(buffer.data() + sizeof(PacketType),
+                packet.payload.data(),
+                packet.payload.size());
+    ENetPacket* enetPkt =
+        enet_packet_create(buffer.data(), buffer.size(),
+                           ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT);
+    enet_peer_send(peer, 0, enetPkt);
+    enet_host_flush(peer->host); 
+    return true;
+}
+
+bool MultiplayerAPI::send_broadcast(ENetHost* host, const RawPacket& packet)
+{
+    if(!host) {
+        return false;
+    }
+    if(!this->initialized) {
+        return false;
+    }
+    size_t total_size = sizeof(PacketType) + packet.payload.size();
+    std::vector<uint8_t> buffer(total_size);
+    
+    std::memcpy(buffer.data(), &packet.type, sizeof(PacketType));
+    std::memcpy(buffer.data() + sizeof(PacketType),
+                packet.payload.data(),
+                packet.payload.size());
+    ENetPacket* enetPkt =
+        enet_packet_create(buffer.data(), buffer.size(),
+                           ENET_PACKET_FLAG_RELIABLE);
+    enet_host_broadcast(host, 0, enetPkt);
+    enet_host_flush(host); 
+    return true;
+}
+void MultiplayerAPI::poll_events(ENetHost* host, std::function<void(ENetEvent&, const RawPacket&)>& on_packet)
+{
+    if(!host) {
+        return;
+    }
+    if(!this->initialized) {
+        return;
+    }
+
+    ENetEvent event;
+    while(enet_host_service(host, &event, 0) > 0) {
+        if(event.type == ENET_EVENT_TYPE_CONNECT) {
+            if(this->peer_connected) {
+                this->peer_connected(event.peer->incomingPeerID);
+            }
+        }
+        else if(event.type == ENET_EVENT_TYPE_RECEIVE) {
+            RawPacket packet;
+            size_t payload_size = event.packet->dataLength - sizeof(PacketType);
+            packet.payload.resize(payload_size);
+            std::memcpy(&packet.type, event.packet->data, sizeof(PacketType));
+            std::memcpy(packet.payload.data(),
+                        event.packet->data + sizeof(PacketType),
+                        payload_size);
+            on_packet(event, packet);
+            enet_packet_destroy(event.packet);
+        }
+        else if(event.type == ENET_EVENT_TYPE_DISCONNECT) {
+            if(this->peer_disconnected) {
+                this->peer_disconnected(event.peer->incomingPeerID);
+            }
+        }
+    }
+}
+
+
