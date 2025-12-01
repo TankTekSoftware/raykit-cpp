@@ -39,7 +39,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/enet)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 
 # -- Add Executable -- #
@@ -53,33 +52,13 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} 
     PRIVATE 
         "${CMAKE_CURRENT_SOURCE_DIR}/src/"
-        "${enet_SOURCE_DIR}/include"
 )
 
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 
         raylib
         imgui
-        enet
 )
-
-if(WIN32)
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE 
-            ws2_32
-            winmm
-            gdi32
-    )
-
-    target_compile_definitions(${PROJECT_NAME} 
-        PRIVATE
-            WIN32_LEAN_AND_MEAN
-            NOMINMAX
-            NOGDI
-            NOUSER
-            NOSOUND
-    )
-endif()
 
 # -- Compile Definitions -- #
 target_compile_definitions(${PROJECT_NAME}
