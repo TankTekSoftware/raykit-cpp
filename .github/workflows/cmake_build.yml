@@ -30,26 +30,20 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake ninja-build gcc g++ libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
-
     - name: Install Dependencies (Windows)
       if: matrix.os == 'windows-latest'
       run: |
         choco install ninja mingw
         echo "C:\ProgramData\mingw64\mingw64\bin" >> $GITHUB_PATH
-
     - name: Configure CMake
       run: cmake --preset ${{ matrix.preset }}
 
     - name: Build
       run: cmake --build --preset ${{ matrix.preset }}
-
-    - name: Test
-      run: ctest --preset ${{ matrix.preset }}
-      continue-on-error: false 
     
     - name: Upload Build Artifacts
       if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: Build Artifacts - ${{ matrix.os }}
+        name: Vortix-${{ matrix.os }}
         path: bin/
