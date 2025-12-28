@@ -131,7 +131,7 @@ Procedural noise generation for terrain, textures, and more. See [FastNoiseLite.
 ## 🎮 Optional: Steamworks Integration
 To enable Steamworks SDK integration:
 1. Download the Steamworks SDK
-2. Extract it to `vendor/steamworks/sdk/`
+2. Extract it to `vendor/steamworks/`
 3. The build system will automatically detect and integrate it
 4. A `USE_STEAMWORKS` preprocessor definition will be added
 
