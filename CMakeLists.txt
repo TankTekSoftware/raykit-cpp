@@ -136,19 +136,18 @@ if(USE_STEAMWORKS)
     endif()
 endif()
 
-
 # Set build mode definitions
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME}
         PRIVATE 
             RAYKIT_DEBUG_MODE
-            ASSET_PATH=${CMAKE_CURRENT_SOURCE_DIR}/assets/
+            ASSET_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/assets/\"
     )
 else()
     target_compile_definitions(${PROJECT_NAME}
         PRIVATE 
             RAYKIT_RELEASE_MODE
-            ASSET_PATH=./assets/
+            ASSET_PATH=\"./assets/\"
     )
     
     # Copy assets directory to binary directory for release builds

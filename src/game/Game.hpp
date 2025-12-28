@@ -1,6 +1,5 @@
 #pragma once
 
-#include "raykit/net/MultiplayerAPI.hpp"
 #include <string>
 
 struct WindowConfig
@@ -16,7 +15,6 @@ class Game
 {
     private: 
         WindowConfig window_config;
-        MultiplayerAPI*  multiplayer_api;
     public:
         Game();
     private:
