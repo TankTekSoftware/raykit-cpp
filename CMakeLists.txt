@@ -39,6 +39,39 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
+# -- Optional Steamworks Integration -- #
+set(STEAMWORKS_SDK_ROOT
+    ${CMAKE_SOURCE_DIR}/vendor/steamworks/
+)
+
+# Check if Steamworks SDK exists
+if(EXISTS ${STEAMWORKS_SDK_ROOT})
+    set(USE_STEAMWORKS ON)
+    message(STATUS "Steamworks SDK found, enabling Steamworks integration")
+    
+    set(STEAMWORKS_INCLUDE_DIR
+        ${STEAMWORKS_SDK_ROOT}/public
+    )
+
+    # Platform-specific library
+    if (WIN32)
+        set(STEAMWORKS_LIB
+            ${STEAMWORKS_SDK_ROOT}/redistributable_bin/win64/steam_api64.lib
+        )
+    elseif (APPLE)
+        set(STEAMWORKS_LIB
+            ${STEAMWORKS_SDK_ROOT}/redistributable_bin/osx/libsteam_api.dylib
+        )
+    elseif (UNIX)
+        set(STEAMWORKS_LIB
+            ${STEAMWORKS_SDK_ROOT}/redistributable_bin/linux64/libsteam_api.so
+        )
+    endif()
+else()
+    set(USE_STEAMWORKS OFF)
+    message(STATUS "Steamworks SDK not found, building without Steamworks integration")
+endif()
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 
 # -- Add Executable -- #
@@ -60,8 +93,69 @@ target_link_libraries(${PROJECT_NAME}
         imgui
 )
 
-# -- Compile Definitions -- #
-target_compile_definitions(${PROJECT_NAME}
-    PRIVATE 
-        ASSET_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/"
-)
+# Add Steamworks if available
+if(USE_STEAMWORKS)
+    target_include_directories(${PROJECT_NAME} 
+        PRIVATE 
+            ${STEAMWORKS_INCLUDE_DIR}
+    )
+    
+    target_link_libraries(${PROJECT_NAME} 
+        PRIVATE 
+            ${STEAMWORKS_LIB}
+    )
+    
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE 
+            USE_STEAMWORKS
+    )
+    
+    # Copy Steamworks DLLs/dylibs
+    if (WIN32)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${STEAMWORKS_SDK_ROOT}/redistributable_bin/win64/steam_api64.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
+
+    if (UNIX AND NOT APPLE)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${STEAMWORKS_SDK_ROOT}/redistributable_bin/linux64/libsteam_api.so
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
+
+    if(APPLE)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${STEAMWORKS_SDK_ROOT}/redistributable_bin/osx/libsteam_api.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        )
+    endif()
+endif()
+
+
+# Set build mode definitions
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE 
+            RAYKIT_DEBUG_MODE
+            ASSET_PATH=${CMAKE_CURRENT_SOURCE_DIR}/assets/
+    )
+else()
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE 
+            RAYKIT_RELEASE_MODE
+            ASSET_PATH=./assets/
+    )
+    
+    # Copy assets directory to binary directory for release builds
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
+        COMMENT "Copying assets to binary directory"
+    )
+endif()
