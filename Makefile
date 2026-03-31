@@ -1,4 +1,4 @@
-PRESET ?= default
+PRESET ?= linux-debug 
 
 .PHONY: all clean build clean rebuild
 

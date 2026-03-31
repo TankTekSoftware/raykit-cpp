@@ -42,6 +42,7 @@ void Game::on_draw()
 void Game::run()
 {
     InitWindow(this->window_config.width, this->window_config.height, this->window_config.title.c_str());
+    SetExitKey(KEY_NULL);
     InitAudioDevice();
     SetTargetFPS(this->window_config.target_fps);
     
