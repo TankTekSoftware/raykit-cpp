@@ -1,0 +1,17 @@
+#pragma once
+
+#include <raykit/scene/Scene.hpp>
+#include <raylib.h>
+
+class SpinningTextureScene : public Scene
+{
+    private:
+        Texture2D bricks_texture;
+        float rotation;
+        float speed;
+    public:
+        void on_compose() override;
+        void on_dispose() override;
+        void on_update(float delta) override;
+        void on_draw() override;
+};
