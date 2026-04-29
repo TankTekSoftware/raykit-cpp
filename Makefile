@@ -1,4 +1,4 @@
-PRESET ?= linux-debug 
+PRESET ?= desktop-debug 
 
 .PHONY: all clean build clean rebuild
 

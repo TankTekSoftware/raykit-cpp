@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.25)
 project(raykit-cpp LANGUAGES CXX)
 
 # -- Compile Commands -- #
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(COMPILE_COMMANDS_TOP ${CMAKE_SOURCE_DIR}/compile_commands.json)
 
 add_custom_target(export_compile_commands_top ALL
@@ -16,8 +18,6 @@ add_custom_target(export_compile_commands_top ALL
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)

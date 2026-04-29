@@ -18,9 +18,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            preset: linux-release
+            preset: desktop-release
           - os: windows-latest
-            preset: windows-mingw-release
+            preset: desktop-release
 
     steps:
     - uses: actions/checkout@v4
@@ -45,5 +45,5 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: Vortix-${{ matrix.os }}
+        name: RayKit-${{ matrix.os }}
         path: bin/

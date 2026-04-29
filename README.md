@@ -6,7 +6,7 @@ A modern C++ game development starter kit built with Raylib, featuring scene man
 * ✅ Zero setup friction — clone and build
 * 🎯 Cross-platform: Windows / macOS / Linux
 * ⚙️ CMake build system with Ninja and CMakePresets
-* 🎮 Raylib 5.5 via FetchContent
+* 🎮 Raylib 6.0 via FetchContent
 * 🎬 Scene management system with lifecycle hooks
 * 🛠️ Built-in utilities: Timer node, FastNoiseLite integration
 * 🪟 ImGui (rlImGui) debugging UI integrated
@@ -31,51 +31,20 @@ A modern C++ game development starter kit built with Raylib, featuring scene man
 
 ## 🛠️ Build & Run Instructions
 ### Prerequisites
-* CMake ≥ 3.25
+* CMake >= 3.25
 * A C++20-capable compiler (GCC, Clang, or MinGW)
 * Ninja build system
 
-### Quick Start
+### Quick Start (Linux/macOS)
 ```bash
-# macOS (Native)
-make build PRESET=macos-debug
+# Windows
+.\make.bat
 
-# Linux (Native or WSL)
-make build PRESET=linux-debug
+# macOS
+make build PRESET=desktop-debug
 
-# Windows (Cross-compile from WSL using MinGW)
-make build PRESET=windows-mingw-debug
-```
-
-### Building by Platform
-#### macOS
-Debug Mode:
-```bash
-make build PRESET=macos-debug
-```
-Release Mode:
-```bash
-make build PRESET=macos-release
-```
-
-#### Linux (Using gcc/g++)
-Debug Mode:
-```bash
-make build PRESET=linux-debug
-```
-Release Mode:
-```bash
-make build PRESET=linux-release
-```
-
-#### Windows (Cross-compile with MinGW from WSL)
-Debug Mode:
-```bash
-make build PRESET=windows-mingw-debug
-```
-Release Mode:
-```bash
-make build PRESET=windows-mingw-release
+# Linux
+make build PRESET=desktop-debug
 ```
 
 ### Running the Game
@@ -93,9 +62,7 @@ make rebuild PRESET=<preset-name>   # Clean, configure, and rebuild
 ```
 
 Available presets:
-- `macos-debug` / `macos-release`
-- `linux-debug` / `linux-release`
-- `windows-mingw-debug` / `windows-mingw-release`
+- `desktop-debug` / `desktop-release`
 
 ## 🎮 Scene System
 The project includes a scene management system for organizing game states:
