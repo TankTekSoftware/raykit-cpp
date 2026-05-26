@@ -12,7 +12,8 @@
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "toolchainFile": "${sourceDir}/cmake/desktop.cmake",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "PLATFORM": "Desktop"
             }
         },
         {
@@ -22,7 +23,8 @@
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "toolchainFile": "${sourceDir}/cmake/desktop.cmake",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "PLATFORM": "Desktop"
             }
         }
     ],

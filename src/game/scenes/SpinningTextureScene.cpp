@@ -6,7 +6,7 @@
 void SpinningTextureScene::on_compose()
 {
     // Code to execute when entering the scene
-    this->bricks_texture = AssetManager::read_texture("textures/bricks.png");
+    this->bricks_texture = AssetManager::read_texture("assets://textures/bricks.png");
     this->speed = 90.0f;
 }
 
