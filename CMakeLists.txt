@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 project(raykit-cpp LANGUAGES CXX)
 
-# -- Compile Commands -- #
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# --- Compile Commands Settings --- #
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(COMPILE_COMMANDS_TOP ${CMAKE_SOURCE_DIR}/compile_commands.json)
 
 add_custom_target(export_compile_commands_top ALL
@@ -14,20 +14,23 @@ add_custom_target(export_compile_commands_top ALL
     VERBATIM
 )
 
-# -- Configure C++ -- #
+# --- Configure C++ --- #
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+# --- Configure Output Directory --- #
+string(TOLOWER "${PLATFORM}" PLATFORM_DIR)
+string(TOLOWER "${CMAKE_BUILD_TYPE}" BUILD_TYPE)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${PLATFORM_DIR}-${BUILD_TYPE})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${PLATFORM_DIR}-${BUILD_TYPE})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${PLATFORM_DIR}-${BUILD_TYPE})
 
 if(MINGW)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 endif()
 
-# -- Fetch Raylib -- #
+# --- Fetch Raylib --- #
 include(FetchContent)
 
 message(STATUS "Fetching raylib...")
@@ -37,9 +40,15 @@ FetchContent_Declare(
     GIT_TAG "6.0"
 )
 
-FetchContent_MakeAvailable(raylib)
+FetchContent_Declare(
+    physfs
+    GIT_REPOSITORY "https://github.com/icculus/physfs.git"
+    GIT_TAG "main"
+)
 
-# -- Optional Steamworks Integration -- #
+FetchContent_MakeAvailable(raylib physfs)
+
+# --- Optional Steamworks Integration --- #
 set(STEAMWORKS_SDK_ROOT
     ${CMAKE_SOURCE_DIR}/vendor/steamworks/
 )
@@ -136,25 +145,27 @@ if(USE_STEAMWORKS)
     endif()
 endif()
 
-# Set build mode definitions
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(${PROJECT_NAME}
-        PRIVATE 
-            RAYKIT_DEBUG_MODE
-            ASSET_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/assets/\"
-    )
-else()
-    target_compile_definitions(${PROJECT_NAME}
-        PRIVATE 
-            RAYKIT_RELEASE_MODE
-            ASSET_PATH=\"./assets/\"
-    )
-    
-    # Copy assets directory to binary directory for release builds
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/assets
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
-        COMMENT "Copying assets to binary directory"
-    )
-endif()
+target_compile_definitions(${PROJECT_NAME}
+    PUBLIC
+        ASSET_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/"
+        PAK_NAME="${PROJECT_NAME}.pck"
+        PROJECT_NAME="${PROJECT_NAME}"
+)
+
+set(PAK_OUTPUT "$<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.pck")
+
+file(GLOB_RECURSE ASSET_FILES
+    LIST_DIRECTORIES false
+    CONFIGURE_DEPENDS
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/*
+)
+list(FILTER ASSET_FILES EXCLUDE REGEX "(^|/)\\.DS_Store$")
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rm -f "${PAK_OUTPUT}"
+    COMMAND ${CMAKE_COMMAND} -E tar "cf" "${PAK_OUTPUT}" --format=zip -- ${ASSET_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    COMMENT "Packaging assets into ${PROJECT_NAME}.pck"
+    VERBATIM
+)

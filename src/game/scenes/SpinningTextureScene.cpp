@@ -1,3 +1,4 @@
+#include "raykit/assets/AssetManager.hpp"
 #include "raylib.h"
 #include <imgui.h>
 #include <game/scenes/SpinningTextureScene.hpp>
@@ -5,7 +6,7 @@
 void SpinningTextureScene::on_compose()
 {
     // Code to execute when entering the scene
-    this->bricks_texture = LoadTexture(ASSET_PATH "/textures/bricks.png");
+    this->bricks_texture = AssetManager::read_texture("textures/bricks.png");
     this->speed = 90.0f;
 }
 

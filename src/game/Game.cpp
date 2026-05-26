@@ -1,4 +1,4 @@
-#include "game/scenes/TimerScene.hpp"
+#include "raykit/assets/AssetManager.hpp"
 #include <memory>
 #include <raykit/scene/SceneManager.hpp>
 #include <game/Game.hpp>
@@ -15,13 +15,16 @@ Game::Game()
     this->window_config.height = 600;
     this->window_config.title = "raykit-cpp - Starter Template";
     this->window_config.target_fps = 60;
+
+    AssetManager::set_asset_path(ASSET_PATH);
+    AssetManager::set_pak_name(PAK_NAME);
+    AssetManager::set_project_name(PROJECT_NAME);
 }
 
 void Game::on_compose()
 {
     // Example of adding a scene to the SceneManager
     SceneManager::add_scene("SPINNING_TEXTURE", std::make_unique<SpinningTextureScene>());
-    SceneManager::add_scene("TIMER_SCENE", std::make_unique<TimerScene>());
 
     SceneManager::change_scene("SPINNING_TEXTURE");
 }
@@ -30,7 +33,6 @@ void Game::on_dispose()
 {
     // Example of removing a scene from the SceneManager
     SceneManager::remove_scene("SPINNING_TEXTURE");
-    SceneManager::remove_scene("TIMER_SCENE");
 }
 
 void Game::on_update(float delta)
@@ -41,14 +43,6 @@ void Game::on_update(float delta)
 void Game::on_draw()
 {
     // Draw your game elements here
-    ImGui::Begin("Scene Manager");
-        if(ImGui::Button("Spinning Texture Example")) {
-            SceneManager::change_scene("SPINNING_TEXTURE"); 
-        }
-        if(ImGui::Button("Timer Example")) {
-            SceneManager::change_scene("TIMER_SCENE");
-        }
-    ImGui::End();
 }
 
 void Game::run()
