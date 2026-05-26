@@ -94,12 +94,14 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} 
     PRIVATE 
         "${CMAKE_CURRENT_SOURCE_DIR}/src/"
+        "${physfs_SOURCE_DIR}/src"
 )
 
 target_link_libraries(${PROJECT_NAME} 
     PRIVATE 
         raylib
         imgui
+        physfs-static
 )
 
 # Add Steamworks if available
