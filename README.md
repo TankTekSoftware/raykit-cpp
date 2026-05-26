@@ -55,7 +55,7 @@ make build PRESET=desktop-debug
 ### Running the Game
 The executable is placed in `bin/{platform}-{build_type}/`:
 ```bash
-./bin/desktop-debug/raykit-cpp    # macOS debug
+./bin/desktop-debug/raykit-cpp
 ```
 
 ## Makefile Commands
