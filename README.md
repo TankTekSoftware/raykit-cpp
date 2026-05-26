@@ -50,7 +50,7 @@ make build PRESET=desktop-debug
 ### Running the Game
 After building, the executable will be in the `bin/` directory:
 ```bash
-./bin/raykit-cpp
+./bin/desktop-debug/raykit-cpp
 ```
 
 ## 📄 Makefile Commands
