@@ -19,6 +19,8 @@ Game::Game()
     AssetManager::set_asset_path(ASSET_PATH);
     AssetManager::set_pak_name(PAK_NAME);
     AssetManager::set_project_name(PROJECT_NAME);
+
+    AssetManager::compose();
 }
 
 void Game::on_compose()
@@ -33,6 +35,8 @@ void Game::on_dispose()
 {
     // Example of removing a scene from the SceneManager
     SceneManager::remove_scene("SPINNING_TEXTURE");
+
+    AssetManager::dispose();
 }
 
 void Game::on_update(float delta)
