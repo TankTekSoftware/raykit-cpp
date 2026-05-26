@@ -3,7 +3,7 @@
 setlocal enabledelayedexpansion
 
 rem Default preset (matches Makefile default)
-set "PRESET=linux-debug"
+set "PRESET=desktop-debug"
 
 rem Parse arguments: action (build/configure/clean/rebuild) and KEY=VALUE pairs
 set "ACTION="
