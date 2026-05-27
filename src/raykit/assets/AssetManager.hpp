@@ -35,6 +35,8 @@ class AssetManager
         static std::vector<unsigned char> read_bytes(const std::string& path);
         static std::string read_text(const std::string& path);
         static Texture2D read_texture(const std::string& path);
+        static Sound read_sound(const std::string& path);
+    public:
         static bool write_text(const std::string& path, const std::string& contents);
     private:
         static Resolved resolve(const std::string& path);

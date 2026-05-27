@@ -292,3 +292,20 @@ Texture2D AssetManager::read_texture(const std::string &path)
 
     return result;
 }
+
+Sound AssetManager::read_sound(const std::string &path)
+{
+    std::vector<unsigned char> bytes = AssetManager::read_bytes(path);
+
+    size_t dot = path.rfind('.');
+    std::string ext = "";
+    if (dot != std::string::npos) {
+        ext = path.substr(dot);
+    }
+
+    Wave wave = LoadWaveFromMemory(ext.c_str(), bytes.data(), static_cast<int>(bytes.size()));
+    Sound result = LoadSoundFromWave(wave);
+    UnloadWave(wave);
+
+    return result;
+}
